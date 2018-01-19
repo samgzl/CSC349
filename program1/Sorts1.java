@@ -4,7 +4,7 @@ public class Sorts1 {
 	public static long selectionSort (int[] arr, int N) {
 		long count = 0;
 		int minIndex;
-		for (int i=0; i<N; i++) {
+		for (int i=0; i<N-1; i++) {
 			minIndex = i;
 			for (int j=i+1; j<N; j++) {
 				if (arr[minIndex] > arr[j]) {
@@ -21,7 +21,9 @@ public class Sorts1 {
 	
 	public static long mergeSort(int[] list, int N) {
 		mergeSort(list, 0, N-1);
-		return count.merge_count;
+		 long ret_val = count.merge_count;
+		 count.merge_count = 0;
+		return ret_val;
 	}
 	
 	private static void mergeSort(int[] list, int first, int last) {
@@ -72,8 +74,10 @@ public class Sorts1 {
 	 }
 	
 	 public static long quickSort (int[] arr, int N) {
-		 quickSort(arr, 0, N-1);	
-		 return count.quick_count;
+		 quickSort(arr, 0, N-1);
+		 long ret_val = count.quick_count;
+		 count.quick_count = 0;
+		 return ret_val;
 	 }
 	 
 	 private static void quickSort (int[] list, int first, int last) {
@@ -87,27 +91,24 @@ public class Sorts1 {
 	 }
 	 
 	 private static void setPivotToEnd (int[] arr, int left, int right) {
-		 int first = arr[left];
-		 int last = arr[right];
-		 int middle = arr[(left+right)/2];
-		 int min = Math.min(first, Math.min(middle, last));
-		 int max = Math.max(first, Math.max(middle, last));
-		 int median;
-		 if ((min == first && max == last) || (max == first && min == last)) {
-			 median = middle;
-			 count.quick_count++;
+		 int center = (left+right)/2;		 
+		 if (arr[right] < arr[left]) {
+			 int temp = arr[left];
+			 arr[left] = arr[right];
+			 arr[right] = temp;
 		 }
-		 else if ((min == middle && max == last) || (min == last && max == middle)) {
-			 median = first;
-			 count.quick_count += 2;
-		 } 
-		 else {
-			 median = last;
-			 count.quick_count += 2;
-		 } 
-		 arr[left] = min;
-		 arr[(left+right)/2] = max;
-		 arr[right] = median;
+		 if (arr[center] < arr[left]) {
+			 int temp = arr[center];
+			 arr[center] = arr[left];
+			 arr[left] = temp;
+		 }
+		 if (arr[right] > arr[center]) {
+			 int temp = arr[center];
+			 arr[center] = arr[right];
+			 arr[right] = temp;
+		 }
+		 count.quick_count += 3;  
+		 
 	 }
 	 
 	 private static int splitList (int[] arr, int left, int right) {

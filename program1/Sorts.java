@@ -81,24 +81,22 @@ public class Sorts {
 	 }
 	 
 	 private static void setPivotToEnd (int[] arr, int left, int right) {
-		 int first = arr[left];
-		 int last = arr[right];
-		 int middle = arr[(left+right)/2];
-		 int min = Math.min(first, Math.min(middle, last));
-		 int max = Math.max(first, Math.max(middle, last));
-		 int median;
-		 if ((min == first && max == last) || (max == first && min == last)) {
-			 median = middle;
+		 int center = (left+right)/2;		 
+		 if (arr[right] < arr[left]) {
+			 int temp = arr[left];
+			 arr[left] = arr[right];
+			 arr[right] = temp;
 		 }
-		 else if ((min == middle && max == last) || (min == last && max == middle)) {
-			 median = first;
-		 } 
-		 else {
-			 median = last;
-		 } 
-		 arr[left] = min;
-		 arr[(left+right)/2] = max;
-		 arr[right] = median;
+		 if (arr[center] < arr[left]) {
+			 int temp = arr[center];
+			 arr[center] = arr[left];
+			 arr[left] = temp;
+		 }
+		 if (arr[right] > arr[center]) {
+			 int temp = arr[center];
+			 arr[center] = arr[right];
+			 arr[right] = temp;
+		 }
 	 }
 	 
 	 private static int splitList (int[] arr, int left, int right) {

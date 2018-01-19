@@ -15,6 +15,9 @@ public class SortCounts {
 		Random rand = new Random();
 		
 		for (int N=100; N<=12800; N*=2) {
+			ss_avg = 0;
+			ms_avg = 0;
+			qs_avg = 0;
 			for (int j=0; j<100; j++) {
 				
 				for (int i=0; i<N; i++) {
