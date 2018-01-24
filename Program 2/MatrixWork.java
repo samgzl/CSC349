@@ -1,16 +1,17 @@
 import java.io.File;
-import com.sun.java_cup.internal.runtime.Scanner;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class MatrixWork {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Enter input-file name: ");
-        Scanner in = new Scanner();
+        Scanner in = new Scanner(System.in);
         File inputFile = new File(in.next());
         Scanner file = new Scanner(inputFile);
         
-        int rowsA = file.next();
-        int colsA = file.next();
+        int rowsA = file.nextInt();
+        int colsA = file.nextInt();
         int[][] A = new int[rowsA][colsA];
         for (int i = 0; i < rowsA; i++) {
             for (int j = 0; j < colsA; j++) {
@@ -18,8 +19,8 @@ public class MatrixWork {
             }
         }
 
-        int rowsB = file.next();
-        int colsB = file.next();
+        int rowsB = file.nextInt();
+        int colsB = file.nextInt();
         int[][] B = new int[rowsB][colsB];
         for (int i = 0; i < rowsB; i++) {
             for (int j = 0; j < colsB; j++) {
@@ -28,8 +29,21 @@ public class MatrixWork {
         }
 
         int[][] C = new int[rowsA][colsB];
-        C = matrixProduct(A, B);
- 
+        try {
+        		C = matrixProduct(A, B);
+        }
+        catch (IllegalArgumentException e) {
+        		System.out.println("Error: Matrices not compatable for mulitplication");
+        		return;
+        }
+        
+        for (int i = 0; i < rowsA; i++) {
+            for (int j = 0; j < colsB; j++) {
+                System.out.print(C[i][j] + " ");
+            }
+            System.out.println("");
+        }
+        
     }
     
     public static int[][] matrixProduct (int [][] A, int[][] B) throws IllegalArgumentException {
@@ -43,9 +57,12 @@ public class MatrixWork {
         int[][] C = new int[rowsA][colsB];
         
         for (int i = 0; i < rowsA; i++) {
-            for (int j = 0; j < colsA; j++) {
-                C[i][j] += A[i][j] * B[
+            for (int j = 0; j < colsB; j++) {
+                for (int k=0; k< colsA; k++) {
+                	   C[i][j] += A[i][k] * B[k][j];
+                }
             }
         } 
+        return C;
     }
 }
