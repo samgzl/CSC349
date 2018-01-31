@@ -3,13 +3,15 @@
 public class MatrixProduct {
 	
 	public static void main(String args[]) {
-		int[][] A = {{1, 2}, {1, 2}};
-		int[][] B = {{1, 2}, {1, 2}};
+		int[][] A = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
+		int[][] B = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
 		int C[][] = matrixProduct_DAC(A, B);
-		System.out.println(C[0][0]);
-		System.out.println(C[1][0]);
-		System.out.println(C[0][1]);
-		System.out.println(C[1][1]);
+		for (int i=0; i<C.length; i++) {
+			for (int j=0; j<C.length; j++) {
+				System.out.println(C[i][j]);
+			}
+		}
+
 	}
 
 	public static int[][] matrixProduct_DAC(int[][] A, int[][] B) {
@@ -30,26 +32,31 @@ public class MatrixProduct {
 		}
 		else {
 			int[][] c11, c12, c21, c22; 
-			c11 = matrix_sum(MatrixProduct_DAC(A, startrowA, startcolA, B, startrowB, startcolB, n/2), MatrixProduct_DAC(A, startrowA, startcolA + n/2, B, n/2, 0, n/2));
-			c12 = matrix_sum(MatrixProduct_DAC(A, startrowA, startcolA, B, startrowB + n/2, startcolB, n/2), MatrixProduct_DAC(A, startrowA + n/2, startcolA, B, startrowB + n/2, startcolB, n/2));
+			c11 = matrix_sum(MatrixProduct_DAC(A, startrowA, startcolA, B, startrowB, startcolB, n/2), MatrixProduct_DAC(A, startrowA, startcolA + n/2, B, startrowB + n/2, startcolB, n/2));
+			c12 = matrix_sum(MatrixProduct_DAC(A, startrowA, startcolA, B, startrowB, startcolB + n/2, n/2), MatrixProduct_DAC(A, startrowA, startcolA + n/2, B, startrowB + n/2, startcolB + n/2, n/2));
 			c21 = matrix_sum(MatrixProduct_DAC(A, startrowA + n/2, startcolA, B, startrowB, startcolB, n/2), MatrixProduct_DAC(A, startrowA + n/2, startcolA + n/2, B, startrowB + n/2, startcolB, n/2));
 			c22 = matrix_sum(MatrixProduct_DAC(A, startrowA + n/2, startcolA, B, startrowB, startcolB + n/2, n/2), MatrixProduct_DAC(A, startrowA + n/2, startcolA + n/2, B, startrowB + n/2, startcolB + n/2, n/2));
-			for (int i=0; i<n; i++) {
-				for (int j=0; j<n; j++) {
-					if (i < n/2 + 1 && j < n/2 + 1) {
-						C[i][j] = c11[i][j];
-					}
-					else if (i < n/2 + 1 && j >= n/2 + 1) {
-						C[i][j] = c12[i][j];
-					}
-					else if (i >= n/2 + 1 && j < n/2 + 1) {
-						C[i][j] = c21[i][j];
-					}
-					else {
-						C[i][j] = c22[i][j];
-					}
+			for (int i=0; i<n/2; i++) {
+				for (int j=0; j<n/2; j++) {
+					C[i][j] = c11[i][j];
 				}
 			}
+			for (int i=0; i<n/2; i++) {
+				for (int j=n/2; j<n; j++) {
+					C[i][j] = c12[i][j-(n/2)];
+				}
+			}
+			for (int i=n/2; i<n; i++) {
+				for (int j=0; j<n/2; j++) {
+					C[i][j] = c21[i-(n/2)][j];
+				}
+			}
+			for (int i=n/2; i<n; i++) {
+				for (int j=n/2; j<n; j++) {
+					C[i][j] = c22[i-(n/2)][j-(n/2)];
+				}
+			}
+			
 		}
 		return C;
 	}
