@@ -1,19 +1,16 @@
 
+// Samantha Gunzl and Quinn Coleman
+// sgunzl, qcoleman
+// Project 2 Part 2
+// 2/2/18
+
+
 public class MatrixProduct {
 	
-	public static void main(String args[]) {
-		int[][] A = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
-		int[][] B = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
-		int C[][] = matrixProduct_DAC(A, B);
-		for (int i=0; i<C.length; i++) {
-			for (int j=0; j<C.length; j++) {
-				System.out.println(C[i][j]);
-			}
-		}
-
-	}
-
 	public static int[][] matrixProduct_DAC(int[][] A, int[][] B) {
+		if (A.length == 0 || B.length == 0) {
+			throw new IllegalArgumentException();
+		}
 		if (!(A.length == A[0].length && B.length == B[0].length && A.length == B.length)) {
 			throw new IllegalArgumentException();
 		}
@@ -71,6 +68,9 @@ public class MatrixProduct {
 	}
 	
 	public static int[][] matrixProduct_Strassen(int[][] A, int[][] B) {
+		if (A.length == 0 || B.length == 0) {
+			throw new IllegalArgumentException();
+		}
 		if (!(A.length == A[0].length && B.length == B[0].length && A.length == B.length)) {
 			throw new IllegalArgumentException();
 		}
@@ -120,8 +120,8 @@ public class MatrixProduct {
 			c21 = matrix_sum_strassen(p3, 0, 0, p4, 0, 0, n/2); 
 			
 			c22temp1 = matrix_sum_strassen(p5, 0, 0, p1, 0, 0, n/2);
-			c22temp2 = matrix_sum_strassen(p2, 0, 0, p6, 0, 0, n/2);
-			c22 = matrix_diff_strassen(c11temp1, 0, 0, c11temp2, 0, 0, n/2);
+			c22temp2 = matrix_diff_strassen(p3, 0, 0, p7, 0, 0, n/2);
+			c22 = matrix_diff_strassen(c22temp1, 0, 0, c22temp2, 0, 0, n/2);
 			
 			for (int i=0; i<n/2; i++) {
 				for (int j=0; j<n/2; j++) {
@@ -191,4 +191,3 @@ public class MatrixProduct {
 	}
 	
 }
-
