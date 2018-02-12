@@ -41,35 +41,78 @@ public class FactoryProblem {
 	static void findOptimalPath(int n, int e1, int e2, int x1, int x2, int a1[], int[] a2, int[] t1, int[] t2) {
 		int[] f1 = new int[n];
 		int[] f2 = new int[n];
-		int[] l1 = new int[n-1];
-		int[] l2 = new int[n-1];
+		int[][] l = new int[n+1][n+1];
 		f1[0] = e1 + a1[0]; // j = 0
 		f2[0] = e2 + a2[0]; // j = 0
 		// compute f values
 		for (int j=1; j<n; j++) {
 			f1[j] = Math.min(f1[j-1] + a1[j], f2[j-1] + t2[j-1] + a1[j]);
+			if (f1[j] == f1[j-1] + a1[j]) {
+				l[0][j+1] = 1;
+			}
+			else {
+				l[0][j+1] = 2;
+			}
 			f2[j] = Math.min(f2[j-1] + a2[j], f1[j-1] + t1[j-1] + a2[j]);	
+			if (f2[j] == f2[j-1] + a2[j]) {
+				l[1][j+1] = 2;
+			}
+			else {
+				l[1][j+1] = 1;
+			}
 		}
 		// compute f*
 		int f_star = 0;
+		int l_star = 0;
 		if (f1[n-1] < f2[n-1]) {
 			f_star = f1[n-1] + x1;
+			l_star = 0;
 		}
 		else if (f1[n-1] > f2[n-1]) {
 			f_star = f2[n-1] + x2;
+			l_star = 1;
 		}
 		else { // f1 == f2
 			if (x1 < x2) {
 				f_star = f1[n-1] + x1;
+				l_star = 0;
 			}
 			else {
 				f_star = f2[n-1] + x2;
+				l_star = 1;
 			}
 		}
-		// compute l values
-		
-		
+		/*
+		for (int i=0; i<n; i++) {
+			System.out.print(f1[i] + " ");
+		}
+		System.out.println();
+		for (int i=0; i<n; i++) {
+			System.out.print(f2[i] + " ");
+		}
+		System.out.println();
+		for (int i=0; i<2; i++) {
+			for (int j=1; j<n+1; j++) {
+				System.out.print(l[i][j] + " ");
+			}
+			System.out.println();
+		}
+		*/
+		printSolution(f_star, l_star, n-1, l, n);
 	}
 	
+	public static void printSolution(int f_star, int l_star, int station, int[][] l, int n) {
+		System.out.println("Fastest time is: " + f_star);
+		System.out.println();
+		System.out.println("The optimal route is:");
+		printSolutionRecursive(l_star, station, l);		
+	}
 	
+	private static void printSolutionRecursive(int line, int station, int[][] l) {
+		if (station == 0) {
+			return;
+		}
+		printSolutionRecursive(l[line][station-1], station-1, l);
+		System.out.println("station " + station + ", line " + line);
+	}
 }
