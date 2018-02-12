@@ -48,17 +48,17 @@ public class FactoryProblem {
 		for (int j=1; j<n; j++) {
 			f1[j] = Math.min(f1[j-1] + a1[j], f2[j-1] + t2[j-1] + a1[j]);
 			if (f1[j] == f1[j-1] + a1[j]) {
-				l[0][j+1] = 1;
+				l[0][j+1] = 0;
 			}
 			else {
-				l[0][j+1] = 2;
+				l[0][j+1] = 1;
 			}
 			f2[j] = Math.min(f2[j-1] + a2[j], f1[j-1] + t1[j-1] + a2[j]);	
 			if (f2[j] == f2[j-1] + a2[j]) {
-				l[1][j+1] = 2;
+				l[1][j+1] = 1;
 			}
 			else {
-				l[1][j+1] = 1;
+				l[1][j+1] = 0;
 			}
 		}
 		// compute f*
@@ -98,10 +98,10 @@ public class FactoryProblem {
 			System.out.println();
 		}
 		*/
-		printSolution(f_star, l_star, n-1, l, n);
+		printSolution(f_star, l_star, n-1, l);
 	}
 	
-	public static void printSolution(int f_star, int l_star, int station, int[][] l, int n) {
+	public static void printSolution(int f_star, int l_star, int station, int[][] l) {
 		System.out.println("Fastest time is: " + f_star);
 		System.out.println();
 		System.out.println("The optimal route is:");
@@ -109,10 +109,11 @@ public class FactoryProblem {
 	}
 	
 	private static void printSolutionRecursive(int line, int station, int[][] l) {
-		if (station == 0) {
-			return;
+		if (station > 0) {
+			//System.out.println(line);
+			//System.out.println(station);
+			printSolutionRecursive(l[line][station-1], station-1, l);
 		}
-		printSolutionRecursive(l[line][station-1], station-1, l);
-		System.out.println("station " + station + ", line " + line);
+		System.out.println("station " + (station+1) + ", line " + (line+1));
 	}
 }
