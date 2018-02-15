@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class GameProblem {
 
-	public static void main() throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException {
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter file name: ");
 		File input = new File(in.next());
@@ -28,23 +28,77 @@ public class GameProblem {
 		int[][] S = new int[n][m];
 		int[][] R = new int[n][m];
 
+		// bottom corner piece
+		S[n-1][m-1] = A[n-1][m-1];
 		
+		// fill bottom row 
+		for (int j=m-2; j>=0; j--) {
+			if (S[n-1][j+1] >= 0) {
+				R[n-1][j] = 'r';
+				S[n-1][j] = S[n-1][j+1] + A[n-1][j];
+			}
+			else  {
+				R[n-1][j] = 'e';
+				S[n-1][j] = A[n-1][j];
+			}
+		}
+
+		// fill right-most column
+		for (int i=n-2; i >= 0; i--) {
+			if (S[i+1][m-1] >= 0) {
+				R[i][m-1] = 'd';
+				S[i][m-1] = S[i+1][m-1] + A[i][m-1];
+			}
+			else {
+				R[i][m-1] = 'e';
+				S[i][m-1] = A[i][m-1];
+			}
+		}
+		
+		// fill in rest
+		for (int i=n-2; i>=0; i--) {
+			for (int j=m-2; j >= 0; j--) {
+				if (S[i+1][j] >= S[i][j+1]) {
+					R[i][j] = 'd';
+					S[i][j] = S[i+1][j];
+				}
+				else {
+					R[i][j] = 'r';
+					S[i][j] = S[i][j+1];
+				}
+			}
+		}	
+		
+		/*
 		for (int i=n-1; i>=0; i--) {
 			for (int j=m-1; j >= 0; j--) {
 				if (i == n-1 && j == m-1) {
 					S[i][j] = A[n-1][m-1];
 				}
 				else if (j == m-1) {
-					S[i][j] = Math.max(S[i+1][m-1], 0) + A[i][j];
+					if (S[i+1][m-1] >= 0) {
+						R[i][j] = 'd';
+						S[i][j] = S[i+1][m-1] + A[i][j];
+					}
+					else {
+						R[i][j] = 'e';
+						S[i][j] = A[i][j];
+					}
+					//S[i][j] = Math.max(S[i+1][m-1], 0) + A[i][j];
 				}
 				else if (i == n-1) {
-					S[i][j] = Math.max(S[n-1][j+1], 0) + A[i][j];
+					if (S[n-1][j+1] >= 0) {
+						R[i][j] = 'r';
+						S[i][j] = S[n-1][j+1] + A[i][j];
+					}
+					else  {
+						R[i][j] = 'e';
+						S[i][j] = A[i][j];
+					}
+					//S[i][j] = Math.max(S[n-1][j+1], 0) + A[i][j];
 				}
-				else {
-					S[i][j] = Math.max(S[i+1][j], S[i][j+1]) + A[i][j];
-				}
-			}
-		}
+				*/
+		
 		
 		for (int i=0; i<n; i++) {
 			for (int j=0; j<m; j++) {
