@@ -82,7 +82,7 @@ public class FactoryProblem {
 				l_star = 1;
 			}
 		}
-		/*
+		
 		for (int i=0; i<n; i++) {
 			System.out.print(f1[i] + " ");
 		}
@@ -97,40 +97,37 @@ public class FactoryProblem {
 			}
 			System.out.println();
 		}
-		*/
+		System.out.println("l_star: " + l_star);		
 		//printSolution(f_star, l_star, n-1, l);
 		printSolution(f_star, l_star, n, l);
 	}
 	
 	public static void printSolution(int f_star, int l_star, int station, int[][] l) {
-		int value;
 		System.out.println("Fastest time is: " + f_star);
 		System.out.println();
 		System.out.println("The optimal route is:");
 		if (l_star == 0) {
-			value = printSolutionRecursive(0, station-1, l);		
+			printSolutionRecursive(0, station, l);		
 		}
 		else {	
-			value = printSolutionRecursive(1, station-1, l);		
+			printSolutionRecursive(1, station, l);		
 		}
-		System.out.println("station " + station + ", line " + value);
+		System.out.println("station " + station + ", line " + (l_star+1));
 	}
 	
-	private static int printSolutionRecursive(int line, int station, int[][] l) {
-		int value;
-		if (station == 0) {
-			return l[line][station] + 1;	
+	private static void printSolutionRecursive(int line, int station, int[][] l) {
+		if (station == 2) {
+			System.out.println("station " + (station-1) + ", line " + (l[line][station]+1));
 		}
 		else {
 			if (l[line][station] == 0) {
-				value = printSolutionRecursive(0, station-1, l);	
+				printSolutionRecursive(0, station-1, l);	
 			}
 			else {
-				value = printSolutionRecursive(1, station-1, l);
+				printSolutionRecursive(1, station-1, l);
 			}
+			System.out.println("station " + (station-1) + ", line " + (l[line][station]+1));
 		}
-		System.out.println("station " + station + ", line " + value);
-		return value;
 	}
 
 	// OLD CODE
