@@ -60,11 +60,11 @@ public class GameProblem {
 			for (int j=m-2; j >= 0; j--) {
 				if (S[i+1][j] >= S[i][j+1]) {
 					R[i][j] = 'd';
-					S[i][j] = S[i+1][j];
+					S[i][j] = S[i+1][j] + A[i][j];
 				}
 				else {
 					R[i][j] = 'r';
-					S[i][j] = S[i][j+1];
+					S[i][j] = S[i][j+1] + A[i][j];
 				}
 			}
 		}	
@@ -99,16 +99,41 @@ public class GameProblem {
 				}
 				*/
 		
-		
+		// Find i,j of max value in S
+		int iMax = -1000; 
+		int jMax = -1000;
+		int max = -1000;
 		for (int i=0; i<n; i++) {
 			for (int j=0; j<m; j++) {
+				if (S[i][j] > max) {
+					max = S[i][j];
+					iMax = i;
+					jMax = j;
+				}
 				System.out.print(S[i][j] + " ");
 			}
 			System.out.println();
 		}
 		
-		
+		System.out.println("Best score: " + S[iMax][jMax]);
+		printOptimalRoute(iMax, jMax, R);
 	}
 	
+	private static void printOptimalRoute(int iMax, int jMax, int[][] R) {
+		int i = iMax;
+		int j = jMax;
+		System.out.print("Best route: ");
+		while (R[i][j] != 'e') {
+			System.out.print("[" + (i+1) + "," + (j+1) + "] to ");
+			if (R[i][j] == 'r') {
+				j++;
+			} 
+			else if (R[i][j] == 'd') {
+				i++;
+			}
+		}
+		System.out.print("exit");
+		System.out.println("");
+	}
 	
 }
