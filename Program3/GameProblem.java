@@ -18,7 +18,6 @@ public class GameProblem {
 				board[i][j] = file.nextInt();
 			}
 		}
-		
 		game(rows, cols, board);
 		
 	}
@@ -26,11 +25,12 @@ public class GameProblem {
 	
 	public static void game(int n, int m, int[][] A) {
 		int[][] S = new int[n][m];
-		int[][] R = new int[n][m];
+		char[][] R = new char[n][m];
 
 		// bottom corner piece
 		S[n-1][m-1] = A[n-1][m-1];
-		
+		R[n-1][m-1] = 'e';
+				
 		// fill bottom row 
 		for (int j=m-2; j>=0; j--) {
 			if (S[n-1][j+1] >= 0) {
@@ -69,36 +69,6 @@ public class GameProblem {
 			}
 		}	
 		
-		/*
-		for (int i=n-1; i>=0; i--) {
-			for (int j=m-1; j >= 0; j--) {
-				if (i == n-1 && j == m-1) {
-					S[i][j] = A[n-1][m-1];
-				}
-				else if (j == m-1) {
-					if (S[i+1][m-1] >= 0) {
-						R[i][j] = 'd';
-						S[i][j] = S[i+1][m-1] + A[i][j];
-					}
-					else {
-						R[i][j] = 'e';
-						S[i][j] = A[i][j];
-					}
-					//S[i][j] = Math.max(S[i+1][m-1], 0) + A[i][j];
-				}
-				else if (i == n-1) {
-					if (S[n-1][j+1] >= 0) {
-						R[i][j] = 'r';
-						S[i][j] = S[n-1][j+1] + A[i][j];
-					}
-					else  {
-						R[i][j] = 'e';
-						S[i][j] = A[i][j];
-					}
-					//S[i][j] = Math.max(S[n-1][j+1], 0) + A[i][j];
-				}
-				*/
-		
 		// Find i,j of max value in S
 		int iMax = -1000; 
 		int jMax = -1000;
@@ -110,16 +80,15 @@ public class GameProblem {
 					iMax = i;
 					jMax = j;
 				}
-				System.out.print(S[i][j] + " ");
 			}
-			System.out.println();
 		}
-		
+
 		System.out.println("Best score: " + S[iMax][jMax]);
 		printOptimalRoute(iMax, jMax, R);
+		
 	}
 	
-	private static void printOptimalRoute(int iMax, int jMax, int[][] R) {
+	private static void printOptimalRoute(int iMax, int jMax, char[][] R) {
 		int i = iMax;
 		int j = jMax;
 		System.out.print("Best route: ");
@@ -132,6 +101,7 @@ public class GameProblem {
 				i++;
 			}
 		}
+		System.out.print("[" + (i+1) + "," + (j+1) + "] to ");
 		System.out.print("exit");
 		System.out.println("");
 	}
