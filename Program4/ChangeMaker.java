@@ -30,15 +30,14 @@ public class ChangeMaker {
 		int k = d.length;
 		int[] c = new int[n];
 		int[] a = new int[n];
-		for (int j = 0; j <= n; j++) {
+		for (int j = 1; j < n; j++) {
 			int min = Integer.MAX_VALUE;
 			int savedI = -1;
 			for (int i = 0; i < k; i++) {
-				if (j == 0) {
-					c[j] = 0;
-				} else if ((j - d[i]) < 0) {
-					c[j-d[i]] = Integer.MAX_VALUE;
+				if ((j - d[i]) < 0) {
+					continue;
 				} else {
+					
 					if (c[j-d[i]] < min) {
 						min = c[j-d[i]];
 						savedI = i;
