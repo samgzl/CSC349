@@ -1,86 +1,60 @@
+// Samantha Gunzl, Quinn Coleman
+// sgunzl, qcoleman
+// 2/26/2018
+// Project 4
 
-import java.util.Scanner;
 
-public class ChangeMaker {
+public class Tester {
 
 	public static void main(String[] args) {
-		int k, n;
-		int[] denominations, change;
-		Scanner in = new Scanner(System.in);
-		System.out.println("Enter the number of denominations & then their values in decreasing order:");
-		k = in.nextInt();
-		denominations = new int[k];
-		change = new int[k];
-		for (int i = 0; i < k; i++) {
-			denominations[i] = in.nextInt();
-		}
-		System.out.println("Enter a value for n: (positive for change, 0 for quit) ");
-		n = in.nextInt();
-		while (n > 0) {
-			change = change_DP(n, denominations);
-			System.out.println("DP algorithm results");
-			System.out.println("Amount: " + n);
-			System.out.print("Optimal distribution: ");
-			int last = 0;
-			for (int i=0; i<k; i++) {
-				if (change[i] != 0) {
-					last = i;
-				}
-			}
-			int count = 0;
-			for (int i=0; i<k; i++) {
-				if (change[i] == 0) {
-					continue;
-				}
-				System.out.print(change[i] + "*" + denominations[i] + "c");
-				count += change[i];
-				if (i != last) {
-					System.out.print(" + ");
-				}
-			}
-			System.out.println();
-			System.out.println("Optimal coin count: " + count);
-			System.out.println();
-			System.out.println("Enter a value for n: (positive for change, 0 for quit) ");
-			n = in.nextInt();
-		}
 		
-	}
-
-	public static int[] change_DP(int n, int[] d) {
-		int k = d.length;
-		int[] c = new int[n+1];
-		int[] a = new int[n+1];
-		for (int j = 1; j < n+1; j++) {
-			int min = Integer.MAX_VALUE;
-			int savedI = -1;
-			for (int i = 0; i < k; i++) {
-				if ((j - d[i]) < 0) {
-					continue;
-				} else {
-					
-					if (c[j-d[i]] < min) {
-						min = c[j-d[i]];
-						savedI = i;
-					}
-				}
-			}
-			c[j] = 1 + min;
-			a[j] = savedI;
+		System.out.println("Testing change_DP and change_greedy algortihms");
+		int us_matches = 0, soviet_matches = 0, p2_matches = 0;
+		int no_nickel_matches = 0, some_set_matches = 0;
+		int[] us_denoms = {100, 50, 25, 10, 5, 1};
+		int[] soviet_denoms = {100, 50, 20, 15, 10, 5, 3, 2, 1};
+		int[] p2_denoms = {64, 32, 16, 8, 4, 2, 1};
+		int[] no_nickel_denoms = {100, 50, 25, 10, 1};
+		int[] some_set_denoms = {66, 35, 27, 18, 10, 1 };
+		for (int i=1; i<201; i++) {
+			us_matches += compareCoins(i, us_denoms);
+			soviet_matches += compareCoins(i, soviet_denoms);
+			p2_matches += compareCoins(i, p2_denoms);
+			no_nickel_matches += compareCoins(i, no_nickel_denoms);
+			some_set_matches += compareCoins(i, some_set_denoms);
 		}
-		int[] b = getSolution(a, n, d);
-		return b;
+		System.out.println("Testing set1: " + us_matches +" matches in 200 tests");
+		System.out.println("Testing set2: " + soviet_matches +" matches in 200 tests");
+		System.out.println("Testing set3: " + p2_matches +" matches in 200 tests");
+		System.out.println("Testing set4: " + no_nickel_matches +" matches in 200 tests");
+		System.out.println("Testing set5: " + some_set_matches +" matches in 200 tests");
+
 	}
 	
-	private static int[] getSolution(int[] a, int n, int[] d) {
-		int i;
-		int[] b = new int[d.length];
-		while (n > 0) {
-			i = n;
-			n = n - d[a[i]];
-			b[a[i]] += 1;		
+	private static int compareCoins(int i, int[] denominations) {
+		int[] dp, greedy;
+		int count_dp, count_greedy;
+		int k = denominations.length;
+		int matches = 0;
+		dp = ChangeMaker.change_DP(i, denominations);
+		greedy = ChangeMaker.change_greedy(i, denominations);
+		count_dp = getOptimalCoinCount(dp, k, denominations);
+		count_greedy = getOptimalCoinCount(greedy, k, denominations);
+		if (count_dp == count_greedy) {
+			matches += 1;
 		}
-		return b;
-		
+		return matches;
 	}
+	
+	private static int getOptimalCoinCount(int[] change, int k, int[] denominations) {
+		int count = 0;
+		for (int i=0; i<k; i++) {
+			if (change[i] == 0) {
+				continue;
+			}
+			count += change[i];
+		}
+		return count;
+	}
+	
 }
