@@ -36,23 +36,23 @@ public class DiGraphTest {
 					} else {
 						System.out.println("Edge (" + from + ", " + to + ") is already in graph.");
 					}
-                                        in.nextLine();
+                    in.nextLine();
 					
 					break;
 				case ("d"):
 					System.out.println("Enter two vertices for edge to delete.");
 					from = in.nextInt();
-                                        to = in.nextInt();
+                    to = in.nextInt();
 					
 					diGraph.deleteEdge(from, to);
 					System.out.println("Edge (" + from + ", " + to + ") deleted.");
-                                        in.nextLine();
+                    in.nextLine();
 					
 					break;
 				case ("e"):
 					System.out.println("Edge count is: " + diGraph.edgeCount());
 					
-                                        break;
+                     break;
 				case ("v"):
 					System.out.println("Vertex count is: " + diGraph.vertexCount());
 					
@@ -64,32 +64,56 @@ public class DiGraphTest {
 					break;
 				case ("t"):
 					try {
-                                            int[] topSort = diGraph.topSort();
-                                            System.out.println("The graph is the following:");
-                                            for (int i = 0; i < topSort.length; i++) {
-                                                    System.out.print(topSort[i]);
-                                                    if (i != topSort.length - 1) {
-                                                            System.out.print(", ");
-                                                    }
-                                            }
-                                            System.out.println();
-                                        } catch (IllegalArgumentException e) {
-                                            System.out.println("Error: graph is cyclic.");
-                                        }
-                                        break;
-				default:
+                        int[] topSort = diGraph.topSort();
+                        System.out.println("The graph is the following:");
+                        for (int i = 0; i < topSort.length; i++) {
+                                System.out.print(topSort[i]);
+                                if (i != topSort.length - 1) {
+                                        System.out.print(", ");
+                                }
+                        }
+                        System.out.println();
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: graph is cyclic.");
+                    }
+                    break;
+				case ("i"):
+					System.out.println("Enter two vertices: from and to.");
+					from = in.nextInt();
+                    to = in.nextInt();
+					Boolean path = diGraph.isTherePath(from, to);
+					System.out.println(path);
+                    in.nextLine();
+                    break;
+				case ("l"):
+					System.out.println("Enter two vertices: from and to.");
+					from = in.nextInt();
+                    to = in.nextInt();
+                    int length = diGraph.lengthOfPath(from, to);
+					System.out.println("Length of path is " + length);
+                    in.nextLine();
+                    break;
+				case ("s"):
+					System.out.println("Enter two vertices: from and to.");
+					from = in.nextInt();
+                    to = in.nextInt();
+                    System.out.print("Path: ");
+                    diGraph.printPath(from, to);
+                    in.nextLine();
+                    break;
+				 default:
 					System.out.println("Invalid option.");
-                                        break;
+                    break;
 			}
                         
-                        choice = in.nextLine();
-                        if (choice.length() > 1) {
-                            System.out.println("Invalid option.");
-                            choice = in.nextLine();
-                            
-                        }
+            choice = in.nextLine();
+            if (choice.length() > 1) {
+                System.out.println("Invalid option.");
+                choice = in.nextLine();
+                
+            }
 		}
-                System.out.println("Good bye.");
+        System.out.println("Good bye.");
 		
 	}
 
