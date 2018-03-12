@@ -28,19 +28,19 @@ public class DiGraph {
 		int N = linkedListArray.length;
 		VertexInfo[] VA = new VertexInfo[N+1];
 		for (int u=1; u<=N; u++) {
-			VA[u].distance = -1;
-			VA[u].predecessor = -1;
+			VA[u] = new VertexInfo(-1, -1);
 		}
 		VA[s].distance = 0;
 		Queue queue = new LinkedList<Integer>();
 		queue.add(s);
 		while (!queue.isEmpty()) {
 			int u = (int) (queue.remove());
-			for (int v=0; v<linkedListArray[u].size(); v++) { // for u's each adjacent vertex v
-				if (VA[v+1].distance == -1) { // v not discovered yet
-					VA[v+1].distance = VA[u].distance + 1;
-					VA[v+1].predecessor = u;
-					queue.add(v+1);
+			for (int v=0; v<linkedListArray[u-1].size(); v++) { // for u's each adjacent vertex v
+				int vertex = linkedListArray[u-1].get(v);
+				if (VA[vertex].distance == -1) { // v not discovered yet
+					VA[vertex].distance = VA[u].distance + 1;
+					VA[vertex].predecessor = u;
+					queue.add(vertex);
 				}				
 			}
 
@@ -67,8 +67,18 @@ public class DiGraph {
 	
 	public void printPath(int from, int to) {
 		VertexInfo[] VA = BFS(from);
-		
-		
+		if (VA[to].distance == -1) {
+			System.out.println("There is no path");
+		}
+		else {
+			String output = "";
+			while (from != to) {
+				output = " -> " + to + output;
+				to = VA[to].predecessor;
+			}
+			output = from + output;
+			System.out.println(output);
+		}
 	}
 	
 	public DiGraph(int n) {
