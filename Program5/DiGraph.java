@@ -182,10 +182,12 @@ public class DiGraph {
 	private TreeNode buildTree(int s) {
 		VertexInfo[] VA = BFS(s);
 		int N = VA.length - 1;
-		//TreeNode root = buildTreeRecursive(s, N, VA);
-		//VertexInfo[] VA = BFS(s);
-		//int N = VA.length-1;
-		TreeNode[] treeNodes = new TreeNode[N+1];
+		
+		TreeNode root = new TreeNode(s, new LinkedList<TreeNode>());
+		// Builds breadth-first tree starting from root
+		buildTreeRecursive(root, N, VA);
+		
+		/*TreeNode[] treeNodes = new TreeNode[N+1];
 		for (int i=1; i<=N; i++) {
 			treeNodes[i] = new TreeNode(i, new LinkedList<TreeNode>());
 		}
@@ -203,39 +205,48 @@ public class DiGraph {
 			}
 			System.out.println();
 		}
-		return treeNodes[s];
+		return treeNodes[s];*/
 		
+		return root;
 	}
 	
-	/*
-	private TreeNode buildTreeRecursive(int s, int N, VertexInfo[] VA) {
-		TreeNode node = new TreeNode(s, new LinkedList<TreeNode>());
-		for (int i = 0; i < N; i++) {
-			if (VA[i].predecessor == node.vertex) {
-				LinkedList<TreeNode> children = 
+	
+	private void buildTreeRecursive(TreeNode currNode, int N, VertexInfo[] VA) {
+		//TreeNode currNode = new TreeNode(s, new LinkedList<TreeNode>());
+		
+		for (int i = 1; i <= N; i++) {
+			if (VA[i].predecessor == currNode.vertex) {
+				// Add a child to currNode
+				TreeNode childNode = new TreeNode(i, new LinkedList<TreeNode>());
+				currNode.children.add(childNode);
+				// repeat process for childNode
+				buildTreeRecursive(childNode, N, VA);
 			}
 		}
-		if (!node.children.isEmpty()) {
-			buildTreeRecursive()
-		}
 		
+		/*if (!currNode.children.isEmpty()) {
+			buildTreeRecursive()
+		}*/
+		return;
 	}
-	*/
+	
 	
 	public void printTree(int s) {
 		TreeNode root = buildTree(s);
 		System.out.println("root: " + root.vertex);
-		printTreeRecursive(root);
+		printTreeRecursive(root, "");
 		
 	}
 	
-	private void printTreeRecursive(TreeNode root) {
-		if (root.children.isEmpty()) {
+	private void printTreeRecursive(TreeNode node, String indent) {
+		System.out.println(indent + node.vertex + " ");
+		if (node.children.isEmpty()) {
 			return;
 		}
-		System.out.println(root.vertex + " ");
-		for (int i=0; i<root.children.size(); i++) {
-			printTreeRecursive(root.children.get(i));
+		//System.out.println(root.vertex + " ");
+		for (int i=0; i<node.children.size(); i++) {
+			indent += "    ";
+			printTreeRecursive(node.children.get(i), indent);
 		}	
 	}
 }
