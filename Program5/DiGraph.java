@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class DiGraph {
-	
+
 	private class VertexInfo {
 		
 		// natural indexing
@@ -166,4 +166,76 @@ public class DiGraph {
 		return a;
 	}
 	
+	
+	private class TreeNode {
+		
+		private int vertex;
+		private LinkedList<TreeNode> children;
+		
+		public TreeNode(int vertex, LinkedList<TreeNode> children) {
+			this.vertex = vertex;
+			this.children = children;
+		}
+		
+	}
+	
+	private TreeNode buildTree(int s) {
+		VertexInfo[] VA = BFS(s);
+		int N = VA.length - 1;
+		//TreeNode root = buildTreeRecursive(s, N, VA);
+		//VertexInfo[] VA = BFS(s);
+		//int N = VA.length-1;
+		TreeNode[] treeNodes = new TreeNode[N+1];
+		for (int i=1; i<=N; i++) {
+			treeNodes[i] = new TreeNode(i, new LinkedList<TreeNode>());
+		}
+		for (int i=1; i<=N; i++) {
+			int predecessor = VA[i].predecessor;
+			System.out.println("i: " + i);
+			if (predecessor != -1) {
+				treeNodes[predecessor].children.add(new TreeNode(i, new LinkedList<TreeNode>()));
+			}
+		}
+		for (int i=1; i<=N; i++) {
+			System.out.println("vertex: " + i);
+			for (int j=0; j<treeNodes[i].children.size(); j++) {
+				System.out.println(treeNodes[i].children.get(j).vertex);
+			}
+			System.out.println();
+		}
+		return treeNodes[s];
+		
+	}
+	
+	/*
+	private TreeNode buildTreeRecursive(int s, int N, VertexInfo[] VA) {
+		TreeNode node = new TreeNode(s, new LinkedList<TreeNode>());
+		for (int i = 0; i < N; i++) {
+			if (VA[i].predecessor == node.vertex) {
+				LinkedList<TreeNode> children = 
+			}
+		}
+		if (!node.children.isEmpty()) {
+			buildTreeRecursive()
+		}
+		
+	}
+	*/
+	
+	public void printTree(int s) {
+		TreeNode root = buildTree(s);
+		System.out.println("root: " + root.vertex);
+		printTreeRecursive(root);
+		
+	}
+	
+	private void printTreeRecursive(TreeNode root) {
+		if (root.children.isEmpty()) {
+			return;
+		}
+		System.out.println(root.vertex + " ");
+		for (int i=0; i<root.children.size(); i++) {
+			printTreeRecursive(root.children.get(i));
+		}	
+	}
 }
