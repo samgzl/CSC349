@@ -73,7 +73,8 @@ public class DiGraphTest {
                                 }
                         }
                         System.out.println();
-                    } catch (IllegalArgumentException e) {
+                    } 
+					catch (IllegalArgumentException e) {
                         System.out.println("Error: graph is cyclic.");
                     }
                     break;
@@ -99,6 +100,12 @@ public class DiGraphTest {
                     to = in.nextInt();
                     System.out.print("Path: ");
                     diGraph.printPath(from, to);
+                    in.nextLine();
+                    break;
+				case ("b"):
+					System.out.println("Enter a source vertex number");
+					int source = in.nextInt();
+                    diGraph.printTree(source);
                     in.nextLine();
                     break;
 				 default:
